@@ -17,3 +17,11 @@ $container['logger'] = function ($c) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
+
+// view renderer
+$container['memcached'] = function ($c) {
+    $settings = $c->get('settings')['memcached'];
+    $memcached = new Memcached();
+    $memcached->addServer($settings['host'], $settings['port']);
+    return $memcached;
+};

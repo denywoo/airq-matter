@@ -5,17 +5,13 @@ use Slim\Http\Response;
 
 // Routes
 
-//$app->get('/[{name}]', function (Request $request, Response $response, array $args) {
-//    // Sample log message
-//    $this->logger->info("Slim-Skeleton '/' route");
-//
-//    // Render index view
-//    return $this->renderer->render($response, 'index.phtml', $args);
-//});
-
-$app->get('/hello/{name}', function ($request, $response, $args) {
+$app->get('/publish/{service}', function (Request $request, Response $response, $args) {
+    $queryParams = $request->getQueryParams();
+//    $auth = $this->get('auth');
+//    var_dump($auth);
+    var_dump($args, $queryParams);
     return $response->write("Hello " . $args['name']);
-});
+})->add($app->getContainer()->get('auth'));
 
 $app->get('/mem', function ($request, $response, $args) {
     $this->memcached->set('key', 'value2');

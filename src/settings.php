@@ -21,5 +21,10 @@ return [
             'host' => 'localhost',
             'port' => '11211',
         ],
+
+        // Auth tokens
+        'auth_tokens' => [
+            'b7EiGSTDJbeu4JiGc3NYPEfn',
+        ],
     ],
 ];

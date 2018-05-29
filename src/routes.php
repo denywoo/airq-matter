@@ -5,15 +5,22 @@ use Slim\Http\Response;
 
 // Routes
 
+/** @var \Slim\App $app */
+
 $app->get('/publish/{service}', function (Request $request, Response $response, $args) {
     $queryParams = $request->getQueryParams();
-//    $auth = $this->get('auth');
-//    var_dump($auth);
-    var_dump($args, $queryParams);
-    return $response->write("Hello " . $args['name']);
+    $key = "{$args['service']}/{$queryParams['task']}/{$queryParams['valuename']}";
+    $value = $queryParams['value'];
+
+    if (empty($key)) {
+        return $response->withStatus(400);
+    }
+
+    $this->memcached->set($key, $value);
+    $this->logger->info('Value added', ['key' => $key, 'value' => $value]);
 })->add($app->getContainer()->get('auth'));
 
-$app->get('/mem', function ($request, $response, $args) {
+$app->get('/mem', function (Request $request, Response $response, $args) {
     $this->memcached->set('key', 'value2');
 
     $res =  $this->memcached->get('key'); // Если всё ок, то выведет value

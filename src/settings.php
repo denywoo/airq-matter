@@ -24,7 +24,8 @@ return [
 
         // Auth tokens
         'auth_tokens' => [
-            'b7EiGSTDJbeu4JiGc3NYPEfn',
+            'AirQ' => 'b7EiGSTDJbeu4JiGc3NYPEfn',
+            'Mattermost' => 'wlXZTug8PsU40XXkTXZ8T9MU',
         ],
     ],
 ];

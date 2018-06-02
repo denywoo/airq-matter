@@ -3,12 +3,6 @@
 
 $container = $app->getContainer();
 
-// view renderer
-$container['renderer'] = function (\Psr\Container\ContainerInterface $c) {
-    $settings = $c->get('settings')['renderer'];
-    return new Slim\Views\PhpRenderer($settings['template_path']);
-};
-
 // monolog
 $container['logger'] = function (\Psr\Container\ContainerInterface $c) {
     $settings = $c->get('settings')['logger'];

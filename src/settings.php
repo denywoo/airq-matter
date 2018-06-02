@@ -1,7 +1,13 @@
 <?php
+
+$dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
+$dotenv->load();
+
+define('ENV_DEV', getenv('ENV_DEV') == 1);
+
 return [
     'settings' => [
-        'displayErrorDetails' => true, // set to false in production
+        'displayErrorDetails' => ENV_DEV,
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
         // Renderer settings
@@ -13,19 +19,20 @@ return [
         'logger' => [
             'name' => 'slim-app',
             'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
-            'level' => \Monolog\Logger::DEBUG,
+            'level' => ENV_DEV ? \Monolog\Logger::DEBUG : \Monolog\Logger::CRITICAL,
+            'timezone' => getenv('TIMEZONE')
         ],
 
         // Memcached settings
         'memcached' => [
-            'host' => 'localhost',
-            'port' => '11211',
+            'host' => getenv('MEMCACHED_HOST'),
+            'port' => getenv('MEMCACHED_PORT'),
         ],
 
         // Auth tokens
         'auth_tokens' => [
-            'AirQ' => 'b7EiGSTDJbeu4JiGc3NYPEfn',
-            'Mattermost' => 'wlXZTug8PsU40XXkTXZ8T9MU',
+            'AirQ' => getenv('PUBLICATION_TOKEN'),
+            'Mattermost' => getenv('MATTERMOST_TOKEN'),
         ],
     ],
 ];

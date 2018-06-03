@@ -5,20 +5,21 @@ $dotenv->load();
 
 define('ENV_DEV', getenv('ENV_DEV') == 1);
 
+$appDir = __DIR__ . '/..';
+
 return [
     'settings' => [
+        // Application settings
         'displayErrorDetails' => ENV_DEV,
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
-        // Renderer settings
-        'renderer' => [
-            'template_path' => __DIR__ . '/../templates/',
-        ],
+        'baseUrl' => getenv('BASE_URL'),
+        'appDir' => $appDir,
 
         // Monolog settings
         'logger' => [
             'name' => 'slim-app',
-            'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
+            'path' => isset($_ENV['docker']) ? 'php://stdout' : "{$appDir}/logs/app.log",
             'level' => ENV_DEV ? \Monolog\Logger::DEBUG : \Monolog\Logger::CRITICAL,
             'timezone' => getenv('TIMEZONE')
         ],
@@ -33,6 +34,12 @@ return [
         'auth_tokens' => [
             'AirQ' => getenv('PUBLICATION_TOKEN'),
             'Mattermost' => getenv('MATTERMOST_TOKEN'),
+        ],
+
+        // Mattermost
+        'mattermost' => [
+            'username' => 'AirQ', // Set to false if you want to use the default username
+            'response_type' => 'ephemeral',
         ],
     ],
 ];

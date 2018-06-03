@@ -63,18 +63,46 @@ class MattermostAirqAction extends BaseAction
 
         array_unshift($airData, $this->getTableHeaders());
 
-
-        $table = $this->renderMarkdownTable($airData);
-
         $responseData = [
-            'response_type' => 'ephemeral',
-            'text' => $table,
+            'response_type' => $this->settings('mattermost/response_type', 'ephemeral'),
+            'text' => $this->renderMarkdownTable($airData),
         ];
+
+        $username = $this->settings('mattermost/username', false);
+        if ($username) {
+            $responseData['username'] = $username;
+        }
+
+        if (file_exists($this->settings('appDir') . '/public/icon.png')) {
+            $responseData['icon_url'] = $this->settings('baseUrl') . '/icon.png';
+        }
+
         return $response->withJson($responseData);
     }
 
     private function getParamKeys() {
         return array_keys(static::$_paramTitles);
+    }
+
+    /**
+     * @param  string       $key
+     * @param  mixed|null   $default
+     * @return mixed|null
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    private function settings($key, $default = null) {
+        $settings = $this->container->get('settings')->all();
+        $subKeys = explode('/', $key);
+        $subKey = array_shift($subKeys);
+        while ($subKey !== null) {
+            if (!array_key_exists($subKey, $settings)) {
+                return $default;
+            }
+            $settings = $settings[$subKey];
+            $subKey = array_shift($subKeys);
+        }
+        return $settings;
     }
 
     private function getEmoji(array $variants, $value) {

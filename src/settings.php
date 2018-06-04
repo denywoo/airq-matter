@@ -30,6 +30,12 @@ return [
             'port' => getenv('MEMCACHED_PORT'),
         ],
 
+        // Mongodb
+        'mongodb' => [
+            'host' => getenv('MONGODB_HOST'),
+            'port' => getenv('MONGODB_PORT'),
+        ],
+
         // Auth tokens
         'auth_tokens' => [
             'AirQ' => getenv('PUBLICATION_TOKEN'),

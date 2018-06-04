@@ -28,3 +28,11 @@ $container['auth'] = function (\Psr\Container\ContainerInterface $c) {
     $authMiddleware = new app\middlewares\TokenAuthMiddleware($tokens, $logger);
     return $authMiddleware;
 };
+
+// mongodb
+$container['mongo'] = function (\Psr\Container\ContainerInterface $c) {
+    $settings = $c->get('settings')['mongodb'];
+    $mongoDsn = "mongodb://{$settings['host']}:{$settings['port']}";
+    $client = new \MongoDB\Client($mongoDsn);
+    return $client;
+};

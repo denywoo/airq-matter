@@ -4,8 +4,52 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0034b1b9ebfc231e36155ad3d10d0549",
+    "content-hash": "e3e5f9c356484930d89f022806980d21",
     "packages": [
+        {
+            "name": "adrianfalleiro/slim-cli-runner",
+            "version": "2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adrianfalleiro/slim-cli-runner.git",
+                "reference": "f8576ebc681a649b9fa9a14827e69db4443d1426"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adrianfalleiro/slim-cli-runner/zipball/f8576ebc681a649b9fa9a14827e69db4443d1426",
+                "reference": "f8576ebc681a649b9fa9a14827e69db4443d1426",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/container-interop": "^1.1",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "adrianfalleiro\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adrian Falleiro",
+                    "email": "adrian@falleiro.com"
+                }
+            ],
+            "description": "Run command line tasks for Slim PHP",
+            "keywords": [
+                "cli",
+                "slim"
+            ],
+            "time": "2017-11-19T08:54:27+00:00"
+        },
         {
             "name": "container-interop/container-interop",
             "version": "1.2.0",

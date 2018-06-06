@@ -4,6 +4,7 @@ namespace app\console;
 
 
 use Interop\Container\ContainerInterface;
+use Monolog\Logger;
 
 class LogAirqDataTask
 {
@@ -28,9 +29,13 @@ class LogAirqDataTask
      *
      * @param array $args
      * @return void
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function command($args)
     {
-
+        /** @var Logger $logger */
+        $logger = $this->container->get('logger');
+        $logger->info('LogAirqData task launched');
     }
 }

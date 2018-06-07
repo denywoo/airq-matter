@@ -5,11 +5,11 @@ $container = $app->getContainer();
 
 // monolog
 $container['logger'] = function (\Psr\Container\ContainerInterface $c) {
-    $settings = $c->get('settings')['logger'];
+    $settings = $c->get('settings');
     Monolog\Logger::setTimezone(new DateTimeZone($settings['timezone']));
-    $logger = new Monolog\Logger($settings['name']);
+    $logger = new Monolog\Logger($settings['logger']['name']);
     $logger->pushProcessor(new Monolog\Processor\UidProcessor());
-    $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
+    $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['logger']['path'], $settings['logger']['level']));
     return $logger;
 };
 

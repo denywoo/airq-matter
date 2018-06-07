@@ -8,56 +8,23 @@ use Slim\Http\Response;
 
 class MattermostAirqAction extends BaseAction
 {
-    private static $_paramTitles = [
-        'AirQ/Climate/Temperature' => [
-            'title' => 'Temperature',
-            'unit' => '°C',
-            'feel' => [
-                23 => ':snowflake:', // cold
-                25 => ':sunglasses:', // comfort
-                29 => ':sweat:', // it is hot
-                100 => ':fire:', // too hot
-            ],
-        ],
-        'AirQ/Climate/Humidity' => [
-            'title' => 'Humidity',
-            'unit' => '%',
-            'feel' => [
-                30 => ':zap:', // dry
-                40 => ':ok_hand:', // not so bad if you in Moscow
-                60 => ':sunglasses:', // comfort if you are human
-                85 => ':palm_tree:', // comfort if you are plant
-                146 => ':umbrella:', // precipitation is possible
-            ]
-        ],
-        'AirQ/CO2/PPM' => [
-            'title' => 'CO₂',
-            'unit' => 'ppm',
-            'feel' => [
-                500 => ':deciduous_tree:', // oh, fresh air!
-                700 => ':grinning:', // good
-                1000 => ':confused:', // not so good
-                1500 => ':disappointed:', // bad
-                5555 => ':finnadie:', // you are dead!
-            ]
-        ],
-    ];
-
     public function __invoke(Request $request, Response $response, $args) {
+        $registeredData = $this->container->get('settings')['registered_data'];
+
         /** @var Memcached $memcached */
         $memcached =  $this->container->get('memcached');
 
         $airData = [];
-        foreach ($this->getParamKeys() as $key) {
+        foreach (array_keys($registeredData) as $key) {
             $airData[$key] = $memcached->get($key);
         }
         $airData = array_filter($airData, function($value) {return $value !== false;});
 
         foreach ($airData as $key => $value) {
             $row = [];
-            $row[] = static::$_paramTitles[$key]['title'];
-            $row[] = $value . ' ' . static::$_paramTitles[$key]['unit'];
-            $row[] = $this->getEmoji(static::$_paramTitles[$key]['feel'], $value);
+            $row[] = $registeredData[$key]['title'];
+            $row[] = $value . ' ' . $registeredData[$key]['unit'];
+            $row[] = $this->getEmoji($registeredData[$key]['feel'], $value);
             $airData[$key] = $row;
         }
 
@@ -78,10 +45,6 @@ class MattermostAirqAction extends BaseAction
         }
 
         return $response->withJson($responseData);
-    }
-
-    private function getParamKeys() {
-        return array_keys(static::$_paramTitles);
     }
 
     /**

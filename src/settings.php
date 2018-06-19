@@ -59,7 +59,7 @@ return [
                     29 => ':sweat:', // it is hot
                     100 => ':fire:', // too hot
                 ],
-                'onChart' => true,
+                'onGraph' => true,
             ],
             'AirQ/Climate/Humidity' => [
                 'title' => 'Humidity',
@@ -71,7 +71,7 @@ return [
                     85 => ':palm_tree:', // comfort if you are plant
                     146 => ':umbrella:', // precipitation is possible
                 ],
-                'onChart' => true,
+                'onGraph' => true,
             ],
             'AirQ/CO2/PPM' => [
                 'title' => 'CO₂',
@@ -83,7 +83,7 @@ return [
                     1500 => ':disappointed:', // bad
                     5555 => ':finnadie:', // you are dead!
                 ],
-                'onChart' => true,
+                'onGraph' => true,
             ],
         ],
     ],

@@ -3,10 +3,9 @@
 namespace app\console;
 
 
-use DateTime;
-use DateTimeZone;
 use Interop\Container\ContainerInterface;
 use Memcached;
+use MongoDB\BSON\UTCDateTime;
 use Monolog\Logger;
 
 class LogAirqDataTask
@@ -47,7 +46,7 @@ class LogAirqDataTask
         }
 
         $record = [
-            'datetime' => $this->getMongoDate(),
+            'datetime' => new UTCDateTime($this->container->get('time_quantum')),
         ];
 
         /** @var Memcached $memcached */
@@ -69,24 +68,11 @@ class LogAirqDataTask
 
         $keys = [];
         foreach ($registeredData as $key => $value) {
-            if (array_key_exists('onChart', $value) && $value['onChart']) {
+            if (array_key_exists('onGraph', $value) && $value['onGraph']) {
                 $keys[] = $key;
             }
         }
 
         return $keys;
-    }
-
-    private function getMongoDate() {
-        $timeZone = $this->container->get('settings')['timezone'];
-        $date = new DateTime();
-        $date->setTimezone(new DateTimeZone($timeZone));
-        list($hours, $minutes) = explode(':', $date->format('H:i'));
-        $hours = intval($hours);
-        $minutes = round(intval($minutes) / 15) * 15;
-        $date->setTime($hours, $minutes, 0);
-        $timestamp = $date->getTimestamp();
-        $utcDateTime = new \MongoDB\BSON\UTCDateTime($timestamp * 1000);
-        return $utcDateTime;
     }
 }

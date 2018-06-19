@@ -36,3 +36,19 @@ $container['mongo'] = function (\Psr\Container\ContainerInterface $c) {
     $client = new \MongoDB\Client($mongoDsn);
     return $client;
 };
+
+// timezone
+$container['timezone'] = function (\Psr\Container\ContainerInterface $c) {
+    $timeZone = new \DateTimeZone($c->get('settings')['timezone']);
+    return $timeZone;
+};
+
+// time rounded to 15 minutes
+$container['time_quantum'] = function (\Psr\Container\ContainerInterface $c) {
+    $date = new DateTime('now', $c->get('timezone'));
+    list($hours, $minutes) = explode(':', $date->format('H:i'));
+    $hours = intval($hours);
+    $minutes = round(intval($minutes) / 15) * 15;
+    $date->setTime($hours, $minutes, 0);
+    return DateTimeImmutable::createFromMutable($date);
+};

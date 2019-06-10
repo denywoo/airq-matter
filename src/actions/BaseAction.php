@@ -3,6 +3,7 @@ namespace app\actions;
 
 
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

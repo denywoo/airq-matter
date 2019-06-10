@@ -22,12 +22,12 @@ class PublishDataAction extends BaseAction
 
         $registeredData = $this->container->get('settings')['registered_data'];
         if (!array_key_exists($key, $registeredData)) {
-            $logger->info('The value was discarded', ['key' => $key, 'value' => $value]);
+            //$logger->info('The value was discarded', ['key' => $key, 'value' => $value]);
             return $response;
         }
 
         $this->container->get('memcached')->set($key, $value);
-        $logger->info('Value added', ['key' => $key, 'value' => $value]);
+        //$logger->info('Value added', ['key' => $key, 'value' => $value]);
 
         return $response;
     }
